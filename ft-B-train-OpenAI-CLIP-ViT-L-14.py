@@ -224,7 +224,7 @@ unfreeze_all = True
 # If the val loss is not decreasing with loss or val even increases 
 EPOCHS = 50
 learning_rate = 5e-7
-batch_size = 40
+batch_size = 8
 
 # Search this code for: label = random.choice([labels[0], labels[1]])
 # -> If you have multiple labels for an image in your dataset (see "ft-X-example-my-dataset-labels.json" for details), you can set which labels to randomly choose from.

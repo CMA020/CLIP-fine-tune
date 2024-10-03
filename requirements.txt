@@ -1,0 +1,13 @@
+adabelief-pytorch
+torch --index-url https://download.pytorch.org/whl/cu118
+torchvision --index-url https://download.pytorch.org/whl/cu118
+torchaudio --index-url https://download.pytorch.org/whl/cu118
+Pillow
+scikit-learn
+matplotlib
+colorama
+tqdm
+numpy
+seaborn
+git+https://github.com/openai/CLIP.git
+
