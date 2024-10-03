@@ -318,18 +318,18 @@ def trainloop():
         # Save checkpoint
         # Save checkpoint
         if (epoch + 1) % 5 == 0:  # This will save at epochs 5, 10, 15, 20, etc.
-        checkpoint = {
-            'epoch': epoch,
-            'model': model,
-            'optimizer_state': optimizer.state_dict(),
-            'scheduler_state': scheduler.state_dict(),
-            'training_losses': training_losses,
-            'validation_losses': validation_losses
-        }
-        # Save with unique epoch number
-        model_path = f"{ft_checkpoints_folder}/clip_ft_epoch_{epoch+1}.pt"
-        torch.save(checkpoint, model_path)
-        print(Fore.GREEN + f"Checkpoint saved for epoch {epoch+1}: {model_path}" + Style.RESET_ALL)
+            checkpoint = {
+                'epoch': epoch,
+                'model': model,
+                'optimizer_state': optimizer.state_dict(),
+                'scheduler_state': scheduler.state_dict(),
+                'training_losses': training_losses,
+                'validation_losses': validation_losses
+            }
+            # Save with unique epoch number
+            model_path = f"{ft_checkpoints_folder}/clip_ft_epoch_{epoch+1}.pt"
+            torch.save(checkpoint, model_path)
+            print(Fore.GREEN + f"Checkpoint saved for epoch {epoch+1}: {model_path}" + Style.RESET_ALL)
         
         # Also save final epoch if it's not a multiple of 5
         if epoch == EPOCHS - 1 and (epoch + 1) % 5 != 0:
