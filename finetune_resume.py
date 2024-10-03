@@ -167,15 +167,27 @@ device = "cuda:0" if torch.cuda.is_available() else "cpu"
 resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip_ft_5.pt"  # Set this to your checkpoint path to resume training
 starting_epoch = 0  # Will be updated if resuming from checkpoint
 
-if resume_checkpoint:
+if os.path.exists(resume_checkpoint):
     print(f"Loading checkpoint from {resume_checkpoint}")
-    checkpoint = torch.load(resume_checkpoint)
-    model = checkpoint['model']
-    starting_epoch = checkpoint['epoch'] + 1
-    training_losses = checkpoint['training_losses']
-    validation_losses = checkpoint['validation_losses']
-    print(f"Resuming from epoch {starting_epoch}")
+    try:
+        checkpoint = torch.load(resume_checkpoint)
+        if isinstance(checkpoint, dict):
+            # If checkpoint is a dictionary containing model and other info
+            model = checkpoint['model']
+            starting_epoch = checkpoint.get('epoch', 0) + 1
+            training_losses = checkpoint.get('training_losses', [])
+            validation_losses = checkpoint.get('validation_losses', [])
+        else:
+            # If checkpoint is just the model
+            model = checkpoint
+        print(f"Successfully loaded checkpoint. Resuming from epoch {starting_epoch}")
+    except Exception as e:
+        print(f"Error loading checkpoint: {str(e)}")
+        print("Loading fresh CLIP model instead")
+        model, preprocess = clip.load(clipmodel, device=device)
 else:
+    print(f"No checkpoint found at {resume_checkpoint}")
+    print("Loading fresh CLIP model")
     model, preprocess = clip.load(clipmodel, device=device)
 
 model = model.float()
@@ -201,19 +213,37 @@ from adabelief_pytorch import AdaBelief
 optimizer = AdaBelief(model.parameters(), lr=learning_rate, eps=1e-16, betas=(0.9, 0.995), 
                      weight_decay=1e-3, weight_decouple=False, rectify=True, print_change_log=False)
 
-# Load optimizer state if resuming
-if resume_checkpoint:
-    optimizer.load_state_dict(checkpoint['optimizer_state'])
-
+total_steps = len(train_dataloader) * (EPOCHS - starting_epoch)
 scheduler = OneCycleLR(optimizer, max_lr=learning_rate, total_steps=total_steps, 
                       pct_start=0.1, anneal_strategy='linear')
 
-# Load scheduler state if resuming
-if resume_checkpoint:
-    scheduler.load_state_dict(checkpoint['scheduler_state'])
+# Load optimizer and scheduler states if available in checkpoint
+if os.path.exists(resume_checkpoint):
+    checkpoint = torch.load(resume_checkpoint)
+    if isinstance(checkpoint, dict):
+        if 'optimizer_state_dict' in checkpoint:
+            optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        if 'scheduler_state_dict' in checkpoint:
+            scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
 
 scaler = GradScaler()
-
+def save_checkpoint(model, optimizer, scheduler, epoch, training_losses, validation_losses, is_final=False):
+    checkpoint = {
+        'epoch': epoch,
+        'model_state_dict': model.state_dict(),  # Save state dict instead of entire model
+        'optimizer_state_dict': optimizer.state_dict(),
+        'scheduler_state_dict': scheduler.state_dict(),
+        'training_losses': training_losses,
+        'validation_losses': validation_losses
+    }
+    
+    if is_final:
+        save_path = f"{ft_checkpoints_folder}/clip_ft_epoch_{epoch+1}_final.pt"
+    else:
+        save_path = f"{ft_checkpoints_folder}/clip_ft_epoch_{epoch+1}.pt"
+    
+    torch.save(checkpoint, save_path)
+    print(Fore.GREEN + f"Checkpoint saved: {save_path}" + Style.RESET_ALL)
 def trainloop():
     contrastive_loss = ContrastiveLoss().to(device)
     logits_images = []
@@ -328,7 +358,7 @@ def trainloop():
             }
             # Save with unique epoch number
             model_path = f"{ft_checkpoints_folder}/clip_ft_epoch_{epoch+1}.pt"
-            torch.save(checkpoint, model_path)
+            save_checkpoint(model, optimizer, scheduler, epoch, training_losses, validation_losses)
             print(Fore.GREEN + f"Checkpoint saved for epoch {epoch+1}: {model_path}" + Style.RESET_ALL)
         
         # Also save final epoch if it's not a multiple of 5
@@ -342,7 +372,7 @@ def trainloop():
                 'validation_losses': validation_losses
             }
             model_path = f"{ft_checkpoints_folder}/clip_ft_epoch_{epoch+1}_final.pt"
-            torch.save(checkpoint, model_path)
+            save_checkpoint(model, optimizer, scheduler, epoch, training_losses, validation_losses, is_final=True)
             print(Fore.GREEN + f"Final checkpoint saved: {model_path}" + Style.RESET_ALL)
 
         # Training interruption checkpoint
