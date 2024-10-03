@@ -164,7 +164,7 @@ clipmodel = 'ViT-L/14'
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 # NEW: Add checkpoint path configuration
-resume_checkpoint = None  # Set this to your checkpoint path to resume training
+resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip_ft_5.pt"  # Set this to your checkpoint path to resume training
 starting_epoch = 0  # Will be updated if resuming from checkpoint
 
 if resume_checkpoint:
