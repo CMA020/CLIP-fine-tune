@@ -15,7 +15,7 @@ import random
 from colorama import Fore, Style
 from tqdm import tqdm
 from torch.cuda.amp import autocast, GradScaler
-
+import numpy as np
 # Global lists to store metrics
 training_losses = []
 validation_losses = []
