@@ -30,6 +30,8 @@ os.makedirs(plots_folder, exist_ok=True)
 os.makedirs(ft_checkpoints_folder, exist_ok=True)
 os.makedirs(text_logs_folder, exist_ok=True)
 
+if not os.access(ft_checkpoints_folder, os.W_OK):
+    print(f"Warning: No write access to {ft_checkpoints_folder}")
 def adjust_unfreeze_rate(epoch, adjust_after=12, increase_rate=2):
     if epoch < adjust_after:
         return 1  # Initial slower unfreeze rate
