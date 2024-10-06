@@ -210,7 +210,7 @@ model = model.float()
 
 # Training parameters
 unfreeze_all = True
-EPOCHS = 50
+EPOCHS = 100
 learning_rate = 5e-7
 batch_size = 8
 
