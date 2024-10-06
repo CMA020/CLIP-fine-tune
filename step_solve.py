@@ -168,7 +168,9 @@ model, preprocess = clip.load(clipmodel, device=device)
 # NEW: Add checkpoint path configuration
 resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip_ft_epoch_35.pt"  # Set this to your checkpoint path to resume training
 starting_epoch = 0  # Will be updated if resuming from checkpoint
-
+from adabelief_pytorch import AdaBelief
+optimizer = AdaBelief(model.parameters(), lr=learning_rate, eps=1e-16, betas=(0.9, 0.995), 
+                     weight_decay=1e-3, weight_decouple=False, rectify=True, print_change_log=False)
 if os.path.exists(resume_checkpoint):
     print(f"Loading checkpoint from {resume_checkpoint}")
     try:
