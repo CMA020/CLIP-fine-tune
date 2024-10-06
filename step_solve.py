@@ -168,6 +168,19 @@ model, preprocess = clip.load(clipmodel, device=device)
 # NEW: Add checkpoint path configuration
 resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip_ft_epoch_35.pt"  # Set this to your checkpoint path to resume training
 starting_epoch = 0  # Will be updated if resuming from checkpoint
+unfreeze_all = True
+EPOCHS = 100
+dataset1 = ImageTextDataset("/content/classifier_data/images", "/content/classifier_data/capture_tune.json", transform=preprocess)
+concatenated_dataset = ConcatDataset([dataset1])
+train_dataloader = DataLoader(concatenated_dataset, batch_size=batch_size, shuffle=True)
+
+val_dataset = ImageTextDataset("/content/classifier_data/images", "/content/classifier_data/capture_tune.json", transform=preprocess)
+val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+
+# Calculate total steps
+total_steps = len(train_dataloader) * (EPOCHS - starting_epoch)
+learning_rate = 5e-7
+batch_size = 8
 from adabelief_pytorch import AdaBelief
 optimizer = AdaBelief(model.parameters(), lr=learning_rate, eps=1e-16, betas=(0.9, 0.995), 
                      weight_decay=1e-3, weight_decouple=False, rectify=True, print_change_log=False)
@@ -222,12 +235,7 @@ learning_rate = 5e-7
 batch_size = 8
 
 # Dataset setup
-dataset1 = ImageTextDataset("/content/classifier_data/images", "/content/classifier_data/capture_tune.json", transform=preprocess)
-concatenated_dataset = ConcatDataset([dataset1])
-train_dataloader = DataLoader(concatenated_dataset, batch_size=batch_size, shuffle=True)
 
-val_dataset = ImageTextDataset("/content/classifier_data/images", "/content/classifier_data/capture_tune.json", transform=preprocess)
-val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
 total_steps = len(train_dataloader) * (EPOCHS - starting_epoch)
 
@@ -237,7 +245,7 @@ optimizer = AdaBelief(model.parameters(), lr=learning_rate, eps=1e-16, betas=(0.
                      weight_decay=1e-3, weight_decouple=False, rectify=True, print_change_log=False)
 
 total_steps = len(train_dataloader) * (EPOCHS - starting_epoch)
-total_steps =100000
+
 scheduler = OneCycleLR(optimizer, max_lr=learning_rate, total_steps=total_steps, 
                       pct_start=0.1, anneal_strategy='linear')
 
