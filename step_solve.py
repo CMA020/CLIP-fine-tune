@@ -187,8 +187,38 @@ optimizer = AdaBelief(model.parameters(), lr=learning_rate, eps=1e-16, betas=(0.
 scheduler = OneCycleLR(optimizer, max_lr=learning_rate, total_steps=total_steps, 
                        pct_start=0.1, anneal_strategy='linear')
 
+def reset_checkpoint_epoch(checkpoint_path):
+    if os.path.exists(checkpoint_path):
+        print(f"Loading checkpoint from {checkpoint_path}")
+        try:
+            checkpoint = torch.load(checkpoint_path)
+            if isinstance(checkpoint, dict):
+                # Set the epoch to 0
+                checkpoint['epoch'] = 0
+                
+                # Adjust the scheduler state if it exists
+                if 'scheduler_state_dict' in checkpoint:
+                    scheduler_state = checkpoint['scheduler_state_dict']
+                    scheduler_state['_step_count'] = 0
+                    scheduler_state['last_epoch'] = 0
+                
+                # Save the modified checkpoint
+                torch.save(checkpoint, checkpoint_path)
+                print(f"Checkpoint epoch reset to 0 and saved at {checkpoint_path}")
+            else:
+                print("Checkpoint is not in the expected dictionary format")
+        except Exception as e:
+            print(f"Error modifying checkpoint: {str(e)}")
+    else:
+        print(f"No checkpoint found at {checkpoint_path}")
+
+# Usage
+resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip2_ft_epoch_50.pt"
+reset_checkpoint_epoch(resume_checkpoint)
+
+# Now load the modified checkpoint
 if os.path.exists(resume_checkpoint):
-    print(f"Loading checkpoint from {resume_checkpoint}")
+    print(f"Loading modified checkpoint from {resume_checkpoint}")
     try:
         checkpoint = torch.load(resume_checkpoint)
         if isinstance(checkpoint, dict):
@@ -197,7 +227,7 @@ if os.path.exists(resume_checkpoint):
             elif 'model' in checkpoint:
                 model = checkpoint['model']
             
-            starting_epoch = checkpoint.get('epoch', 0) + 1
+            starting_epoch = checkpoint['epoch']  # This should now be 0
             training_losses = checkpoint.get('training_losses', [])
             validation_losses = checkpoint.get('validation_losses', [])
             
@@ -205,19 +235,9 @@ if os.path.exists(resume_checkpoint):
                 optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
             
             if 'scheduler_state_dict' in checkpoint:
-                # Load the scheduler state
-                scheduler_state = checkpoint['scheduler_state_dict']
-                
-                # Calculate the number of steps already taken
-                steps_taken = scheduler_state['_step_count']
-                
-                # Adjust the scheduler's state
-                scheduler.step(steps_taken)
-                
-                # Update the total_steps in the scheduler
-                scheduler.total_steps = total_steps
+                scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
             
-            print(f"Successfully loaded checkpoint. Resuming from epoch {starting_epoch}")
+            print(f"Successfully loaded checkpoint. Starting from epoch {starting_epoch}")
         else:
             model = checkpoint
             print("Loaded model from checkpoint (non-dict format)")
@@ -228,6 +248,13 @@ if os.path.exists(resume_checkpoint):
 else:
     print(f"No checkpoint found at {resume_checkpoint}")
     print("Starting with fresh CLIP model")
+
+# Recalculate total steps
+total_steps = len(train_dataloader) * EPOCHS
+
+# Update the scheduler's total_steps
+scheduler.total_steps = total_steps
+
 
 model = model.float()
 
@@ -273,9 +300,9 @@ def save_checkpoint(model, optimizer, scheduler, epoch, training_losses, validat
     }
     
     if is_final:
-        save_path = f"{ft_checkpoints_folder}/clip2_ft_epoch_{epoch+1}_final.pt"
+        save_path = f"{ft_checkpoints_folder}/clip3_ft_epoch_{epoch+1}_final.pt"
     else:
-        save_path = f"{ft_checkpoints_folder}/clip2_ft_epoch_{epoch+1}.pt"
+        save_path = f"{ft_checkpoints_folder}/clip3_ft_epoch_{epoch+1}.pt"
     
     torch.save(checkpoint, save_path)
     print(Fore.GREEN + f"Checkpoint saved: {save_path}" + Style.RESET_ALL)
