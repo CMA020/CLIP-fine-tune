@@ -184,6 +184,9 @@ batch_size = 8
 from adabelief_pytorch import AdaBelief
 optimizer = AdaBelief(model.parameters(), lr=learning_rate, eps=1e-16, betas=(0.9, 0.995), 
                      weight_decay=1e-3, weight_decouple=False, rectify=True, print_change_log=False)
+scheduler = OneCycleLR(optimizer, max_lr=learning_rate, total_steps=total_steps, 
+                       pct_start=0.1, anneal_strategy='linear')
+
 if os.path.exists(resume_checkpoint):
     print(f"Loading checkpoint from {resume_checkpoint}")
     try:
@@ -202,16 +205,17 @@ if os.path.exists(resume_checkpoint):
                 optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
             
             if 'scheduler_state_dict' in checkpoint:
-                # Recreate the scheduler with the updated total_steps
-                scheduler = OneCycleLR(optimizer, max_lr=learning_rate, 
-                                       total_steps=total_steps, 
-                                       pct_start=0.1, anneal_strategy='linear')
-                
-                # Load the state dict, but don't overwrite total_steps
+                # Load the scheduler state
                 scheduler_state = checkpoint['scheduler_state_dict']
-                scheduler_state['total_steps'] = total_steps
-                scheduler_state['_step_count'] = min(scheduler_state['_step_count'], total_steps)
-                scheduler.load_state_dict(scheduler_state)
+                
+                # Calculate the number of steps already taken
+                steps_taken = scheduler_state['_step_count']
+                
+                # Adjust the scheduler's state
+                scheduler.step(steps_taken)
+                
+                # Update the total_steps in the scheduler
+                scheduler.total_steps = total_steps
             
             print(f"Successfully loaded checkpoint. Resuming from epoch {starting_epoch}")
         else:
@@ -224,7 +228,6 @@ if os.path.exists(resume_checkpoint):
 else:
     print(f"No checkpoint found at {resume_checkpoint}")
     print("Starting with fresh CLIP model")
-
 
 model = model.float()
 
