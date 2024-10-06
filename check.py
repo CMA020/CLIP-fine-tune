@@ -230,6 +230,7 @@ optimizer = AdaBelief(model.parameters(), lr=learning_rate, eps=1e-16, betas=(0.
                      weight_decay=1e-3, weight_decouple=False, rectify=True, print_change_log=False)
 
 total_steps = len(train_dataloader) * (EPOCHS - starting_epoch)
+total_steps =100000
 scheduler = OneCycleLR(optimizer, max_lr=learning_rate, total_steps=total_steps, 
                       pct_start=0.1, anneal_strategy='linear')
 
