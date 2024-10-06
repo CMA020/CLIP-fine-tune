@@ -166,7 +166,7 @@ clipmodel = 'ViT-L/14'
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 xyz, preprocess = clip.load(clipmodel, device=device)
 # NEW: Add checkpoint path configuration
-resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip_ft_epoch_30.pt"  # Set this to your checkpoint path to resume training
+resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip_ft_30.pt"  # Set this to your checkpoint path to resume training
 starting_epoch = 0  # Will be updated if resuming from checkpoint
 
 if os.path.exists(resume_checkpoint):
@@ -240,9 +240,9 @@ def save_checkpoint(model, optimizer, scheduler, epoch, training_losses, validat
     }
     
     if is_final:
-        save_path = f"{ft_checkpoints_folder}/clip_iter2_ft_epoch_{epoch+1}_final.pt"
+        save_path = f"{ft_checkpoints_folder}/clip2_ft_epoch_{epoch+1}_final.pt"
     else:
-        save_path = f"{ft_checkpoints_folder}/clip_iter2_ft_epoch_{epoch+1}.pt"
+        save_path = f"{ft_checkpoints_folder}/clip2_ft_epoch_{epoch+1}.pt"
     
     torch.save(checkpoint, save_path)
     print(Fore.GREEN + f"Checkpoint saved: {save_path}" + Style.RESET_ALL)
@@ -359,7 +359,7 @@ def trainloop():
                 'validation_losses': validation_losses
             }
             # Save with unique epoch number
-            model_path = f"{ft_checkpoints_folder}/clip_iter2_ft_epoch_{epoch+1}.pt"
+            model_path = f"{ft_checkpoints_folder}/clip2_ft_epoch_{epoch+1}.pt"
             save_checkpoint(model, optimizer, scheduler, epoch, training_losses, validation_losses)
             print(Fore.GREEN + f"Checkpoint saved for epoch {epoch+1}: {model_path}" + Style.RESET_ALL)
         
@@ -373,7 +373,7 @@ def trainloop():
                 'training_losses': training_losses,
                 'validation_losses': validation_losses
             }
-            model_path = f"{ft_checkpoints_folder}/clip_iter2_ft_epoch_{epoch+1}_final.pt"
+            model_path = f"{ft_checkpoints_folder}/clip2_ft_epoch_{epoch+1}_final.pt"
             save_checkpoint(model, optimizer, scheduler, epoch, training_losses, validation_losses, is_final=True)
             print(Fore.GREEN + f"Final checkpoint saved: {model_path}" + Style.RESET_ALL)
 
