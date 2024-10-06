@@ -25,7 +25,7 @@ print("\n")
 plots_folder = 'ft-plots'
 ft_checkpoints_folder = '/content/drive/MyDrive/clip_weights'
 text_logs_folder = 'ft-logs'
-
+batch_size = 8
 os.makedirs(plots_folder, exist_ok=True)
 os.makedirs(ft_checkpoints_folder, exist_ok=True)
 os.makedirs(text_logs_folder, exist_ok=True)
