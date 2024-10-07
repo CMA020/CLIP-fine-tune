@@ -166,7 +166,7 @@ clipmodel = 'ViT-L/14'
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 model, preprocess = clip.load(clipmodel, device=device)
 # NEW: Add checkpoint path configuration
-resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip3_ft_epoch_15.pt"  # Set this to your checkpoint path to resume training
+  # Set this to your checkpoint path to resume training
 starting_epoch = 0  # Will be updated if resuming from checkpoint
 unfreeze_all = True
 EPOCHS = 100
@@ -213,7 +213,7 @@ def reset_checkpoint_epoch(checkpoint_path):
         print(f"No checkpoint found at {checkpoint_path}")
 
 # Usage
-resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip2_ft_epoch_50.pt"
+resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip3_ft_epoch_15.pt"
 reset_checkpoint_epoch(resume_checkpoint)
 
 # Now load the modified checkpoint
