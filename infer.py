@@ -75,7 +75,7 @@ def run_inference():
                 results.append(result)
     
     # Save results
-    output_file = 'inference_results.json'
+    output_file = '/content/inference_results.json'
     with open(output_file, 'w') as f:
         json.dump(results, f)
     
