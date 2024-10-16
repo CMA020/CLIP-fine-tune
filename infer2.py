@@ -9,8 +9,8 @@ import numpy as np
 from pathlib import Path
 
 # Configuration
-inference_image_dir = '/content/classifier_data/no_goal_data_cropped'  # Change this to your image directory
-checkpoint_path = '/content/drive/MyDrive/clip_weights/clip4_ft_epoch_10.pt'  # Change this to your checkpoint path
+inference_image_dir = '/home/cma/capture/no_goal_data_cropped'  # Change this to your image directory
+checkpoint_path = '/home/cma/capture/clip4_ft_epoch_10.pt'  # Change this to your checkpoint path
 clipmodel = 'ViT-L/14'  # Make sure this matches your training configuration
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 batch_size = 8  # Adjust based on your GPU memory
@@ -62,14 +62,15 @@ def run_inference():
     # Create dataset and dataloader
     dataset = InferenceDataset(inference_image_dir, transform=preprocess)
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False)
-
+    
     # Encode text prompts
     text_inputs = clip.tokenize(text_prompts).to(device)
     with torch.no_grad():
         text_features = model.encode_text(text_inputs)
         text_features /= text_features.norm(dim=-1, keepdim=True)
-
+    
     results = []
+    
     with torch.no_grad():
         for images, image_paths in tqdm(dataloader, desc="Running inference"):
             images = images.to(device)
@@ -86,12 +87,10 @@ def run_inference():
                 result = {
                     'image_path': image_path,
                     'features': image_feature.cpu().numpy().tolist(),
-                    'similarity_scores': {
-                        prompt: score.item() for prompt, score in zip(text_prompts, scores)
-                    }
+                    'similarity_scores': {prompt: score.item() for prompt, score in zip(text_prompts, scores)}
                 }
                 results.append(result)
-
+    
     # Save results
     output_file = '/content/inference_results.json'
     with open(output_file, 'w') as f:
