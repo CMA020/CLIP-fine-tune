@@ -9,11 +9,11 @@ import numpy as np
 from pathlib import Path
 
 # Configuration
-inference_image_dir = '/home/cma/capture/no_goal_data_cropped'  # Change this to your image directory
-checkpoint_path = '/home/cma/capture/clip4_ft_epoch_10.pt'  # Change this to your checkpoint path
+inference_image_dir = '/content/classifier_data/no_goal_data_cropped'  # Change this to your image directory
+checkpoint_path = '/content/drive/MyDrive/clip_weights/clip4_ft_epoch_10.pt'  # Change this to your checkpoint path
 clipmodel = 'ViT-L/14'  # Make sure this matches your training configuration
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
-batch_size = 8  # Adjust based on your GPU memory
+batch_size = 1  # Adjust based on your GPU memory
 
 # Text prompts for similarity scoring
 text_prompts = [
