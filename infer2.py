@@ -9,7 +9,7 @@ import numpy as np
 from pathlib import Path
 
 # Configuration
-inference_image_dir = '/content/classifier_data/no_goal_data_cropped'  # Change this to your image directory
+inference_image_dir = '/content/classifier_data/goal_data_vccropeed'  # Change this to your image directory
 checkpoint_path = '/content/drive/MyDrive/clip_weights/clip4_ft_epoch_10.pt'  # Change this to your checkpoint path
 clipmodel = 'ViT-L/14'  # Make sure this matches your training configuration
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
