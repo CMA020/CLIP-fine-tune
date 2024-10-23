@@ -16,7 +16,7 @@ clip_model, preprocess = clip.load('ViT-L/14', device=device)
 clip_model = clip_model.float()
 
 # Load CLIP checkpoint
-checkpoint_path = '/content/drive/MyDrive/clip_weights/clip4_ft_epoch_10.pt'
+checkpoint_path = '/content/drive/MyDrive/clip_weights/clip_rf_ft_epoch_25.pt'
 checkpoint = torch.load(checkpoint_path)
 if isinstance(checkpoint, dict):
     if 'model_state_dict' in checkpoint:
