@@ -117,8 +117,11 @@ def process_with_clip(img, coords):
     
     if is_goal:
         goal_counter += 1
-        
-        print(f"Saved goal frame: ")
+        output_directory = "/content/capture/goal_preds"
+        output_filename = f"goal_{goal_counter}.jpg"
+        output_path = os.path.join(output_directory, output_filename)
+        cv2.imwrite(output_path, img)
+        print(f"Saved goal frame: {output_filename}")
         print(f"Confidence scores: inside post: {scores[2]:.2%}, goal: {scores[3]:.2%}")
         last_clip_prediction_frame = frame_counter
         return 0  # Return 0 for goal detected
