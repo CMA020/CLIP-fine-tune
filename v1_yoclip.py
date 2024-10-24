@@ -114,7 +114,7 @@ def process_with_clip(img, coords):
 
     # Check if either "goal" or "football inside footballpost" scores are above 70%
     goal_scores = [scores[2], scores[3]]  # Indices for goal-related prompts
-    is_goal = any(score > 0.49 for score in goal_scores)
+    is_goal = any(score > 0.6 for score in goal_scores)
     print(scores , "scoooooooooooooooooooooooooooooooooooooooooore")
     if is_goal:
         goal_counter += 1
