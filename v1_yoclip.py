@@ -41,7 +41,7 @@ with torch.no_grad():
 
 # Video setup
 #vid = cv2.VideoCapture("/content/classifier_data/manc.mp4")
-vid=cv2.VideoCapture("/content/drive/MyDrive/classico.mp4")
+vid=cv2.VideoCapture("/content/drive/MyDrive/tot.mp4")
 goal_counter = 0
 frame_counter = 0
 rows, cols = 0, 0
