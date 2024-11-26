@@ -170,7 +170,7 @@ model, preprocess = clip.load(clipmodel, device=device)
 starting_epoch = 0  # Will be updated if resuming from checkpoint
 unfreeze_all = True
 EPOCHS = 100
-dataset1 = ImageTextDataset("/content/classifier_data/images_refined", "/content/classifier_data/capture_tune_refined.json", transform=preprocess)
+dataset1 = ImageTextDataset("/content/classifier_data/images_ref2", "/content/classifier_data/capture_tune_refined3.json", transform=preprocess)
 concatenated_dataset = ConcatDataset([dataset1])
 train_dataloader = DataLoader(concatenated_dataset, batch_size=batch_size, shuffle=True)
 

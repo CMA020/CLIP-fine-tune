@@ -90,7 +90,7 @@ def run_inference():
                     'similarity_scores': {prompt: score.item() for prompt, score in zip(text_prompts, scores)}
                 }
                 results.append(result)
-    
+     
     # Save results
     output_file = '/content/inference_results.json'
     with open(output_file, 'w') as f:
