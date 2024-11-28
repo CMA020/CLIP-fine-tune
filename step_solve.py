@@ -213,7 +213,7 @@ def reset_checkpoint_epoch(checkpoint_path):
         print(f"No checkpoint found at {checkpoint_path}")
 
 # Usage
-resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip_rf2_ft_epoch_10_WAY.pt"
+resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip_rf2_ft_epoch_5_WAY_2.pt"
 reset_checkpoint_epoch(resume_checkpoint)
 
 # Now load the modified checkpoint
