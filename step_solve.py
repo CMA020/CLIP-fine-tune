@@ -169,7 +169,7 @@ model, preprocess = clip.load(clipmodel, device=device)
   # Set this to your checkpoint path to resume training
 starting_epoch = 0  # Will be updated if resuming from checkpoint
 unfreeze_all = True
-EPOCHS = 100
+EPOCHS = 10000
 dataset1 = ImageTextDataset("/content/classifier_data/images_ref2", "/content/classifier_data/capture_tune_refined3.json", transform=preprocess)
 concatenated_dataset = ConcatDataset([dataset1])
 train_dataloader = DataLoader(concatenated_dataset, batch_size=batch_size, shuffle=True)
@@ -260,7 +260,7 @@ model = model.float()
 
 # Training parameters
 unfreeze_all = True
-EPOCHS = 100
+EPOCHS = 100000
 learning_rate = 5e-7
 batch_size = 8
 
@@ -302,8 +302,7 @@ def save_checkpoint(model, optimizer, scheduler, epoch, training_losses, validat
     if is_final:
         save_path = f"{ft_checkpoints_folder}/clip_rf2_ft_epoch_{epoch+1}_final.pt"
     else:
-        save_path = f"{ft_checkpoints_folder}/clip_rf2_ft_epoch_{epoch+1}_WAY_2.pt"
-    
+        save_path = f"{ft_checkpoints_folder}/clip_rf2_ft_epoch_{epoch+1}_WAY  
     torch.save(checkpoint, save_path)
     print(Fore.GREEN + f"Checkpoint saved: {save_path}" + Style.RESET_ALL)
 def trainloop():
