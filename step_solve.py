@@ -169,7 +169,7 @@ model, preprocess = clip.load(clipmodel, device=device)
   # Set this to your checkpoint path to resume training
 starting_epoch = 0  # Will be updated if resuming from checkpoint
 unfreeze_all = True
-EPOCHS = 10000
+EPOCHS = 10000000
 dataset1 = ImageTextDataset("/content/classifier_data/images_ref2", "/content/classifier_data/capture_tune_refined3.json", transform=preprocess)
 concatenated_dataset = ConcatDataset([dataset1])
 train_dataloader = DataLoader(concatenated_dataset, batch_size=batch_size, shuffle=True)
@@ -178,7 +178,7 @@ val_dataset = ImageTextDataset("/content/classifier_data/images", "/content/clas
 val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
 # Calculate total steps
-total_steps = len(train_dataloader) * (EPOCHS - starting_epoch)
+total_steps = len(train_dataloader) * (EPOCHS)
 learning_rate = 5e-7
 batch_size = 8
 from adabelief_pytorch import AdaBelief
@@ -260,21 +260,21 @@ model = model.float()
 
 # Training parameters
 unfreeze_all = True
-EPOCHS = 100000
+EPOCHS = 100000000
 learning_rate = 5e-7
 batch_size = 8
 
 # Dataset setup
 
 
-total_steps = len(train_dataloader) * (EPOCHS - starting_epoch)
+total_steps = len(train_dataloader) * (EPOCHS )
 
 # Optimizer setup
 from adabelief_pytorch import AdaBelief
 optimizer = AdaBelief(model.parameters(), lr=learning_rate, eps=1e-16, betas=(0.9, 0.995), 
                      weight_decay=1e-3, weight_decouple=False, rectify=True, print_change_log=False)
 
-total_steps = len(train_dataloader) * (EPOCHS - starting_epoch)
+total_steps = len(train_dataloader) * (EPOCHS)
 
 scheduler = OneCycleLR(optimizer, max_lr=learning_rate, total_steps=total_steps, 
                       pct_start=0.1, anneal_strategy='linear')
@@ -302,7 +302,7 @@ def save_checkpoint(model, optimizer, scheduler, epoch, training_losses, validat
     if is_final:
         save_path = f"{ft_checkpoints_folder}/clip_rf2_ft_epoch_{epoch+1}_final.pt"
     else:
-        save_path = f"{ft_checkpoints_folder}/clip_rf2_ft_epoch_{epoch+1}_WAY  "
+        save_path = f"{ft_checkpoints_folder}/clip_rf2_ft_epoch_{epoch+1}_WAY3  "
     torch.save(checkpoint, save_path)
     print(Fore.GREEN + f"Checkpoint saved: {save_path}" + Style.RESET_ALL)
 def trainloop():
