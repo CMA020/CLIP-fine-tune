@@ -213,7 +213,7 @@ def reset_checkpoint_epoch(checkpoint_path):
         print(f"No checkpoint found at {checkpoint_path}")
 
 # Usage
-resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip_rf2_ft_epoch_5_WAY_2.pt"
+resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip_rf2_ft_epoch_10_WAY_3.pt"
 reset_checkpoint_epoch(resume_checkpoint)
 
 # Now load the modified checkpoint
@@ -302,7 +302,7 @@ def save_checkpoint(model, optimizer, scheduler, epoch, training_losses, validat
     if is_final:
         save_path = f"{ft_checkpoints_folder}/clip_rf2_ft_epoch_{epoch+1}_final.pt"
     else:
-        save_path = f"{ft_checkpoints_folder}/clip_rf2_ft_epoch_{epoch+1}_WAY3  "
+        save_path = f"{ft_checkpoints_folder}/clip_rf2_ft_epoch_{epoch+1}_WAY4  "
     torch.save(checkpoint, save_path)
     print(Fore.GREEN + f"Checkpoint saved: {save_path}" + Style.RESET_ALL)
 def trainloop():
