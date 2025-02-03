@@ -10,7 +10,7 @@ from pathlib import Path
 
 # Configuration
 inference_image_dir = '/content/classifier_data/goal_data_vccropeed'  # Change this to your image directory
-checkpoint_path = '/content/drive/MyDrive/clip_weights/clip_rf2_ft_epoch_10_WAY5.pt'  # Change this to your checkpoint path
+#checkpoint_path = '/content/drive/MyDrive/clip_weights/clip_rf2_ft_epoch_10_WAY5.pt'  # Change this to your checkpoint path
 clipmodel = 'ViT-L/14'  # Make sure this matches your training configuration
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 batch_size = 1  # Adjust based on your GPU memory
@@ -35,18 +35,18 @@ text_prompts = [
 model, preprocess = clip.load(clipmodel, device=device)
 model = model.float()
 
-# Load checkpoint
-print(f"Loading checkpoint from {checkpoint_path}")
-checkpoint = torch.load(checkpoint_path)
-if isinstance(checkpoint, dict):
-    if 'model_state_dict' in checkpoint:
-        model.load_state_dict(checkpoint['model_state_dict'])
-    elif 'model' in checkpoint:
-        model = checkpoint['model']
-    print("Successfully loaded checkpoint")
-else:
-    model = checkpoint
-    print("Loaded model from checkpoint (non-dict format)")
+# # Load checkpoint
+# print(f"Loading checkpoint from {checkpoint_path}")
+# checkpoint = torch.load(checkpoint_path)
+# if isinstance(checkpoint, dict):
+#     if 'model_state_dict' in checkpoint:
+#         model.load_state_dict(checkpoint['model_state_dict'])
+#     elif 'model' in checkpoint:
+#         model = checkpoint['model']
+#     print("Successfully loaded checkpoint")
+# else:
+#     model = checkpoint
+#     print("Loaded model from checkpoint (non-dict format)")
 model.eval()
 
 class InferenceDataset(Dataset):
