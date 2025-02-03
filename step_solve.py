@@ -302,7 +302,7 @@ def save_checkpoint(model, optimizer, scheduler, epoch, training_losses, validat
     if is_final:
         save_path = f"{ft_checkpoints_folder}/clip_rf2_ft_epoch_{epoch+1}_final.pt"
     else:
-        save_path = f"{ft_checkpoints_folder}/clip_rf2_ft_epoch_{epoch+1}_WAY6  "
+        save_path = f"{ft_checkpoints_folder}/clip_rf2_ft_epoch_{epoch+1}_WAY6.pt  "
     torch.save(checkpoint, save_path)
     print(Fore.GREEN + f"Checkpoint saved: {save_path}" + Style.RESET_ALL)
 def trainloop():

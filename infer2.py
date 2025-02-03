@@ -10,7 +10,7 @@ from pathlib import Path
 
 # Configuration
 inference_image_dir = '/content/classifier_data/goal_data_vccropeed'  # Change this to your image directory
-checkpoint_path = '/content/drive/MyDrive/clip_weights/clip_rf2_ft_epoch_10_WAY5.pt'  # Change this to your checkpoint path
+checkpoint_path = '/content/drive/MyDrive/clip_weights/clip_rf2_ft_epoch_10_WAY5  '  # Change this to your checkpoint path
 clipmodel = 'ViT-L/14'  # Make sure this matches your training configuration
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 batch_size = 1  # Adjust based on your GPU memory
