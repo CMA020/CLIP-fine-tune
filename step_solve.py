@@ -170,7 +170,7 @@ model, preprocess = clip.load(clipmodel, device=device)
 starting_epoch = 0  # Will be updated if resuming from checkpoint
 unfreeze_all = True
 EPOCHS = 10000000
-dataset1 = ImageTextDataset("/content/classifier_data/images_ref2", "/content/classifier_data/capture_tune_refined3.json", transform=preprocess)
+dataset1 = ImageTextDataset("/content/classifier_data/images_ref2", "/content/classifier_data/capture_tune_refined3f.json", transform=preprocess)
 concatenated_dataset = ConcatDataset([dataset1])
 train_dataloader = DataLoader(concatenated_dataset, batch_size=batch_size, shuffle=True)
 
@@ -214,7 +214,7 @@ def reset_checkpoint_epoch(checkpoint_path):
 
 # Usage
 resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip_rf2_ft_epoch_10_WAY_5.pt"
-reset_checkpoint_epoch(resume_checkpoint)
+# reset_checkpoint_epoch(resume_checkpoint)
 
 # Now load the modified checkpoint
 if os.path.exists(resume_checkpoint):
