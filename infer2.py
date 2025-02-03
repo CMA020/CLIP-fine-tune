@@ -94,7 +94,7 @@ def run_inference():
             for i, (image_feature, image_path, scores) in enumerate(zip(image_features, image_paths, similarity_scores)):
                 result = {
                     'image_path': image_path,
-                    'features': image_feature.cpu().numpy().tolist(),
+                    #'features': image_feature.cpu().numpy().tolist(),
                     'similarity_scores': {prompt: score.item() for prompt, score in zip(text_prompts, scores)}
                 }
                 results.append(result)

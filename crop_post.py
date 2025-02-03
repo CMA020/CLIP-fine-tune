@@ -54,8 +54,9 @@ def process_image(img_path, output_dir, no_prediction_dir):
         print(f"Failed to process {img_path}: {str(e)}")
 
 def main():
-    input_dir = os.path.expanduser("~/capture/data_v3/goal")
-    output_dir = os.path.expanduser("~/classifier_data/nogoal_crop_refined2")
+    # input_dir = os.path.expanduser("~/capture/data_v3/goal")
+    input_dir = os.path.expanduser("~/classifier_data/test_dataset")
+    output_dir = os.path.expanduser("~/classifier_data/goal_data_vccropeed")
     no_prediction_dir = os.path.expanduser("~/classifier_data/no_prediction")
     
     # Ensure output directories exist
