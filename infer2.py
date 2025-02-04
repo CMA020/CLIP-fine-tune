@@ -23,12 +23,12 @@ batch_size = 1  # Adjust based on your GPU memory
 #     "goal",
 # ]
 text_prompts = [
-    "nothing  inside net",
-    "Nothing inside footballpost",
-    "not a goal",
+    "ball not inside net",
+    "ball not inside footballpost",
+
     "white or yellow sphere  inside net",
     "ball inside footballpost",
-    "goal"
+   
 ]
 
 # Load CLIP model and preprocessing
