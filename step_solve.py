@@ -216,7 +216,7 @@ def reset_checkpoint_epoch(checkpoint_path):
 resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip_rf2_ft_epoch_20_NWAY.pt  "
 # reset_checkpoint_epoch(resume_checkpoint)
 
-# Now load the modified checkpoint
+# Now load the modified checkpoint10
 if os.path.exists(resume_checkpoint):
     print(f"Loading modified checkpoint from {resume_checkpoint}")
     try:
@@ -408,7 +408,7 @@ def trainloop():
         validation_losses=0
         # Save checkpoint
         # Save checkpoint
-        if (epoch + 1) % 10 == 0:  # This will save at epochs 5, 10, 15, 20, etc.
+        if (epoch + 1) % 5 == 0:  # This will save at epochs 5, 10, 15, 20, etc.
             checkpoint = {
                 'epoch': epoch,
                 'model': model,
