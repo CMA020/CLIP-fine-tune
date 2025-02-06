@@ -408,7 +408,7 @@ def trainloop():
         validation_losses=0
         # Save checkpoint
         # Save checkpoint
-        if (epoch + 1) % 5 == 0:  # This will save at epochs 5, 10, 15, 20, etc.
+        if (epoch + 1) % 7 == 0:  # This will save at epochs 5, 10, 15, 20, etc.
             checkpoint = {
                 'epoch': epoch,
                 'model': model,
