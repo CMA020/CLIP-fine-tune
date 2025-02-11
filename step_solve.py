@@ -213,7 +213,7 @@ def reset_checkpoint_epoch(checkpoint_path):
         print(f"No checkpoint found at {checkpoint_path}")
 
 # Usage
-resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip_rf2_ft_epoch_20_NWAY.pt  "
+resume_checkpoint = "/content/drive/MyDrive/clip_weights/clip_rf2_ft_epoch_30_NWAY.pt  "
 # reset_checkpoint_epoch(resume_checkpoint)
 
 # Now load the modified checkpoint10
@@ -408,7 +408,7 @@ def trainloop():
         validation_losses=0
         # Save checkpoint
         # Save checkpoint
-        if (epoch + 1) % 15 == 0:  # This will save at epochs 5, 10, 15, 20, etc.
+        if (epoch + 1) % 20 == 0:  # This will save at epochs 5, 10, 15, 20, etc.
             checkpoint = {
                 'epoch': epoch,
                 'model': model,
