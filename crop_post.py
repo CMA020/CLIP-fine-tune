@@ -55,8 +55,9 @@ def process_image(img_path, output_dir, no_prediction_dir):
 
 def main():
     # input_dir = os.path.expanduser("~/capture/data_v3/goal")
-    input_dir = os.path.expanduser("~/classifier_data/test_dataset")
-    output_dir = os.path.expanduser("~/classifier_data/goal_data_vccropeed")
+   # input_dir = os.path.expanduser("~/classifier_data/test_dataset")
+    input_dir = os.path.expanduser("/home/cma/classifier_data/nogoal_uncrop")
+    output_dir = os.path.expanduser("/home/cma/classifier_data/no_goal_data_cropped")
     no_prediction_dir = os.path.expanduser("~/classifier_data/no_prediction")
     
     # Ensure output directories exist
