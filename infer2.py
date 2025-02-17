@@ -32,7 +32,7 @@ batch_size = 1  # Adjust based on your GPU memory
 # ]
 text_prompts = [
     "ball not inside net",
-    "ball not  inside footballpost"
+    "ball not  inside footballpost",
     
     "white or yellow sphere  inside net",
     "ball inside footballpost",
